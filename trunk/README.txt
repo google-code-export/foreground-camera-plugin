@@ -3,25 +3,24 @@ Foreground Camera Plugin for Phonegap.
 Originally by: 	- Bruno Carreira
 				- Lucas Farias
 				- Rafael Luna
-				- Vinicius Soares
+				- Vinicius Fonseca
 
-The default Phonegap Camera Plugin calls the native camera and this makes Android Garbage Collector to kill background applications.
-This plugin avoid your application to go background and be killed by Garbage Collector. We used the phonegap source code
-and modified it to avoid this problem. This plugin works only with File URI.
+The default Phonegap Camera Plugin calls the native camera and this makes Android Garbage Collector to kill background applications. This plugin avoid your application to go background and be killed by Garbage Collector with other applications. We used the Phonegap source code and modified it to avoid this problem. This plugin works only with File URI. 
 
 Adding the plugin to your project
 
-    1) To install the plugin, move camera.js to your project's www folder and include a reference to it in your html files.
-    2) Put the java files in your src/ folder.
-    3) Add the following to res/xml/plugins.xml file <plugin name="Camera" value="<path to your EmbeddedCameraAppLauncher.java>"/>.
-	4) Put the strings.xml in your layout folder.
-	5) In you AndroidManifest.xml, put this permissions:
+    1) To install the plugin, move the file camera.js to your project's www folder and include a reference to it in your html files.
+    2) Put the Java files in your src/ folder.
+    3) Change the default Camera Plugin into res/xml/plugins.xml file to <plugin name="Camera" value="<path to your ForegroundCameraLauncher.java>"/>.
+	4) Put the strings.xml in your res/values folder.
+	5) Put the foregroundcameraplugin.xml in your res/layout folder.
+	6) In you AndroidManifest.xml, put this permissions:
 		    <uses-feature android:name="android.hardware.camera" />
 			<uses-feature android:name="android.hardware.camera.autofocus" />
 		And declare the Camera Activity:
 			<activity
 				android:name=".CameraActivity"
-				android:label="EmbeddedCameraApp"
+				android:label="ForegroundCameraPlugin"
 				android:screenOrientation="landscape" >
 			</activity>
 
