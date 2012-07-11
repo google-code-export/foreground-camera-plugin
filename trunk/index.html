@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Capture Photo</title>
+
+    <script src="js/cordova-1.8.0.js"></script>
+    <script type="text/javascript" src="js/interno/camera.js"></script>
+    <script type="text/javascript" charset="utf-8">
+	
+	    // A button will call this function
+	    //
+	    function capturePhoto() {
+	      // Take picture using device camera and retrieve image as base64-encoded string
+	      navigator.camera.getPicture(onPhotoDataSuccess, onFail,
+		  {
+	          quality: 70,
+	          targetWidth: 800,
+	          targetHeight: 600
+		  });
+	    }
+	    
+	    // Called when a photo is successfully retrieved
+	    //
+	    function onPhotoDataSuccess(imageData) {
+	      // Uncomment to view the base64 encoded image data
+	      console.log("---> Image: "+imageData);
+	
+	      // Get image handle
+	      //
+	      var smallImage = document.getElementById('smallImage');
+	
+	      // Unhide image elements
+	      //
+	      smallImage.style.display = 'block';
+	
+	      // Show the captured photo
+	      // The inline CSS rules are used to resize the image
+	      //
+	      smallImage.src = imageData;
+	    }
+	
+	    // Called if something bad happens.
+	    // 
+	    function onFail(message) {
+	      alert('Failed because: ' + message);
+	    }
+
+    </script>
+  </head>
+  <body>
+    <button onclick="capturePhoto();">Capture Photo</button> <br>
+    <img style="display:none;width:160px;height:160px;" id="smallImage" src="" />
+  </body>
+</html>
