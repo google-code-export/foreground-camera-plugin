@@ -205,8 +205,8 @@ public class ForegroundCameraLauncher extends CameraLauncher {
                 exif.createOutFile(getRealPathFromURI(uri, this.ctx));
                 exif.writeExifData();
 
-                // Send Uri back to JavaScript for viewing image
-                this.success(new PluginResult(PluginResult.Status.OK, uri.toString()), this.callbackId);
+                // Send Uri back to JavaScript for viewing image                
+                this.success(new PluginResult(PluginResult.Status.OK, getRealPathFromURI(uri, this.ctx)), this.callbackId); 
                 
                 bitmap.recycle();
                 bitmap = null;
