@@ -1,0 +1,8 @@
+Foreground Camera Plugin for Phonegap (Cordova)
+Copyright 2012 Lucas Farias - Rafael Luna - Vinícius Fonseca.
+
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org)
+
+- ForegroundCameraLauncher.java was based on CameraLauncher.java, found in Phonegap (Apache Cordova) version 1.8.0
+- camera.js was based on cordova-1.8.0.js, found in Phonegap (Apache Cordova) version 1.8.0
