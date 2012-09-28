@@ -1,3 +1,19 @@
+/*
+	    Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinícius Fonseca.
+
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+   		limitations under the License.   			
+ */
+
 package com.foregroundcameraplugin;
 
 import java.io.File;
@@ -17,6 +33,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+/**
+ * Camera Activity Class. Configures Android camera to take picture and show it.
+ */
 public class CameraActivity extends Activity {
 
 	private static final String TAG = "CameraActivity";
@@ -42,12 +61,13 @@ public class CameraActivity extends Activity {
 		Button captureButton = (Button) findViewById(R.id.button_capture);
 		captureButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				
-				if (pressed) return;
-				
+
+				if (pressed)
+					return;
+
 				// Set pressed = true to prevent freezing.
 				// Issue 1 at
-				// http://code.google.com/p/foreground-camera-plugin/issues/detail?id=1				
+				// http://code.google.com/p/foreground-camera-plugin/issues/detail?id=1
 				pressed = true;
 
 				// get an image from the camera
@@ -78,7 +98,6 @@ public class CameraActivity extends Activity {
 		}
 		super.onPause();
 	}
-	
 
 	/** A safe way to get an instance of the Camera object. */
 	public static Camera getCameraInstance() {
@@ -95,8 +114,9 @@ public class CameraActivity extends Activity {
 
 		public void onPictureTaken(byte[] data, Camera camera) {
 
-			Uri fileUri = (Uri) getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
-			
+			Uri fileUri = (Uri) getIntent().getExtras().get(
+					MediaStore.EXTRA_OUTPUT);
+
 			File pictureFile = new File(fileUri.getPath());
 
 			try {
