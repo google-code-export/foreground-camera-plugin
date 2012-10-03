@@ -1,5 +1,5 @@
 <!-- 
-		Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinícius Fonseca. 
+		Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinï¿½cius Fonseca. 
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
   <head>
     <title>Capture Photo</title>
 
-    <script src="js/cordova-1.8.0.js"></script>
+    <script src="js/cordova-2.1.0.js"></script>
     <script type="text/javascript" src="js/camera.js"></script>
     <script type="text/javascript" charset="utf-8">
 
@@ -40,7 +40,7 @@
 	    //
 	    function onPhotoDataSuccess(imageData) {
 	      // Uncomment to view the base64 encoded image data
-	      console.log("---> Imagem: "+imageData);
+	      console.log("---> Image: "+imageData);
 	
 	      // Get image handle
 	      //
@@ -55,6 +55,12 @@
 	      //
 	      smallImage.src = imageData;
 	    }
+	    
+	    // Called if something bad happens.
+	    // 
+	    function onFail(message) {
+	      alert('Failed because: ' + message);
+	    }
 	
 	    // A button will call this function
 	    //
@@ -66,12 +72,6 @@
 	          targetWidth: 800,
 	          targetHeight: 600
 		  });
-	    }
-	
-	    // Called if something bad happens.
-	    // 
-	    function onFail(message) {
-	      alert('Failed because: ' + message);
 	    }
 
     </script>
