@@ -25,12 +25,18 @@ Adding the plugin to your project
 
     1) To install the plugin, move the file camera.js to your project's www folder and include a reference to it in your html files.
     2) Put the Java files in your src/ folder.
-    3) Change the default Camera Plugin into res/xml/plugins.xml file to <plugin name="Camera" value="<path to your ForegroundCameraLauncher.java>"/>.
+    3) Change the default Camera Plugin into res/xml/config.xml file to <plugin name="Camera" value="<path to your ForegroundCameraLauncher.java>"/>.
 	4) Put the strings.xml in your res/values folder.
 	5) Put the foregroundcameraplugin.xml in your res/layout folder.
 	6) In you AndroidManifest.xml, put this permissions:
-		    <uses-feature android:name="android.hardware.camera" />
-			<uses-feature android:name="android.hardware.camera.autofocus" />
+		    
+		    <uses-permission android:name="android.permission.CAMERA" />
+    		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    		<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    		<uses-feature android:name="android.hardware.camera" />
+    		<uses-feature android:name="android.hardware.camera.autofocus" />
+    		
 		And declare the Camera Activity:
 			<activity
 				android:name=".CameraActivity"
