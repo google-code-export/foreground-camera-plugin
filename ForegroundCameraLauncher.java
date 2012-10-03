@@ -1,5 +1,5 @@
 /*
-	    Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinícius Fonseca.
+	    Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinï¿½cius Fonseca.
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -131,12 +131,12 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 		// Save the number of images currently on disk for later
 		this.numPics = queryImgDB().getCount();
 
-		Intent intent = new Intent(this.ctx.getContext(), CameraActivity.class);
+		Intent intent = new Intent(this.cordova.getActivity().getApplicationContext(), CameraActivity.class);
 		this.photo = createCaptureFile();
 		this.imageUri = Uri.fromFile(photo);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, this.imageUri);
 
-		this.ctx.startActivityForResult((Plugin) this, intent, 1);
+		this.cordova.startActivityForResult((Plugin) this, intent, 1);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 	 * @return a File object pointing to the temporary picture
 	 */
 	private File createCaptureFile() {
-		File photo = new File(getTempDirectoryPath(ctx.getContext()), "Pic.jpg");
+		File photo = new File(getTempDirectoryPath(this.cordova.getActivity().getApplicationContext()), "Pic.jpg");
 		return photo;
 	}
 
@@ -172,7 +172,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 				// Create an ExifHelper to save the exif data that is lost
 				// during compression
 				ExifHelper exif = new ExifHelper();
-				exif.createInFile(getTempDirectoryPath(ctx.getContext())
+				exif.createInFile(getTempDirectoryPath(this.cordova.getActivity().getApplicationContext())
 						+ "/Pic.jpg");
 				exif.readExifData();
 
@@ -180,11 +180,10 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 				Bitmap bitmap;
 				try {
 					bitmap = android.provider.MediaStore.Images.Media
-							.getBitmap(this.ctx.getContentResolver(), imageUri);
+							.getBitmap(this.cordova.getActivity().getContentResolver(), imageUri);
 				} catch (FileNotFoundException e) {
 					Uri uri = intent.getData();
-					android.content.ContentResolver resolver = this.ctx
-							.getContentResolver();
+					android.content.ContentResolver resolver = this.cordova.getActivity().getContentResolver();
 					bitmap = android.graphics.BitmapFactory
 							.decodeStream(resolver.openInputStream(uri));
 				}
@@ -199,15 +198,13 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 						"image/jpeg");
 				Uri uri = null;
 				try {
-					uri = this.ctx
-							.getContentResolver()
+					uri = this.cordova.getActivity().getContentResolver()
 							.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 									values);
 				} catch (UnsupportedOperationException e) {
 					LOG.d(LOG_TAG, "Can't write to external media storage.");
 					try {
-						uri = this.ctx
-								.getContentResolver()
+						uri = this.cordova.getActivity().getContentResolver()
 								.insert(android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI,
 										values);
 					} catch (UnsupportedOperationException ex) {
@@ -219,7 +216,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 
 				// Add compressed version of captured image to returned media
 				// store Uri
-				OutputStream os = this.ctx.getContentResolver()
+				OutputStream os = this.cordova.getActivity().getContentResolver()
 						.openOutputStream(uri);
 				bitmap.compress(Bitmap.CompressFormat.JPEG, this.mQuality, os);
 				os.close();
@@ -305,7 +302,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 	 * @return a cursor
 	 */
 	private Cursor queryImgDB() {
-		return this.ctx.getContentResolver().query(
+		return this.cordova.getActivity().getContentResolver().query(
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 				new String[] { MediaStore.Images.Media._ID }, null, null, null);
 	}
@@ -329,7 +326,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 					.getColumnIndex(MediaStore.Images.Media._ID))) - 1;
 			Uri uri = Uri.parse(MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 					+ "/" + id);
-			this.ctx.getContentResolver().delete(uri, null, null);
+			this.cordova.getActivity().getContentResolver().delete(uri, null, null);
 		}
 	}
 
@@ -375,7 +372,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 	 */
 	private String getRealPathFromURI(Uri contentUri, CordovaInterface ctx) {
 		String[] proj = { _DATA };
-		Cursor cursor = ctx.managedQuery(contentUri, proj, null, null, null);
+		Cursor cursor = cordova.getActivity().managedQuery(contentUri, proj, null, null, null);
 		int column_index = cursor.getColumnIndexOrThrow(_DATA);
 		cursor.moveToFirst();
 		return cursor.getString(column_index);
