@@ -1,5 +1,5 @@
 /**
-	    Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinícius Fonseca. 
+	    Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinï¿½cius Fonseca. 
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -80,11 +80,11 @@ Camera.prototype.getPicture = function(successCallback, errorCallback,
 		}
 	}
 
-	Cordova.exec(successCallback, errorCallback, "Camera", "takePicture",
+	cordova.exec(successCallback, errorCallback, "Camera", "takePicture",
 			[ options ]);
 };
 
-Cordova.addConstructor(function() {
+cordova.addConstructor(function() {
 	if (typeof navigator.camera === "undefined") {
 		navigator.camera = new Camera();
 	}
