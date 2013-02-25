@@ -1,9 +1,3 @@
-// Platform: android
-
-// commit ac725f6ae0bd655789771e2a40b8d60cb4c8c221
-
-// File generated at :: Mon Feb 04 2013 10:59:03 GMT-0800 (PST)
-
 /*
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
