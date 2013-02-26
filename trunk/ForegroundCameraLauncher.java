@@ -1,5 +1,5 @@
 /*
-	    Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vinï¿½cius Fonseca.
+	    Copyright 2013 Bruno Carreira - Lucas Farias - Rafael Luna - Vinícius Fonseca.
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@ import java.io.OutputStream;
 
 import org.apache.cordova.CameraLauncher;
 import org.apache.cordova.ExifHelper;
+import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaInterface;
+import org.apache.cordova.api.CordovaPlugin;
 import org.apache.cordova.api.LOG;
-import org.apache.cordova.api.Plugin;
 import org.apache.cordova.api.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -69,47 +69,45 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 	public ForegroundCameraLauncher() {
 	}
 
-	/**
-	 * Executes the request and returns PluginResult.
-	 * 
-	 * @param action
-	 *            The action to execute.
-	 * @param args
-	 *            JSONArry of arguments for the plugin.
-	 * @param callbackId
-	 *            The callback id used when calling back into JavaScript.
-	 * @return A PluginResult object with a status and message.
-	 */
-	public PluginResult execute(String action, JSONArray args, String callbackId) {
-		PluginResult.Status status = PluginResult.Status.OK;
-		String result = "";
-		this.callbackId = callbackId;
+    /**
+     * Executes the request and returns PluginResult.
+     *
+     * @param action        	The action to execute.
+     * @param args          	JSONArry of arguments for the plugin.
+     * @param callbackContext   The callback id used when calling back into JavaScript.
+     * @return              	A PluginResult object with a status and message.
+     */
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    	
+        this.callbackContext = callbackContext;
 
-		try {
-			if (action.equals("takePicture")) {
-				this.targetHeight = 0;
-				this.targetWidth = 0;
-				this.mQuality = 80;
+        if (action.equals("takePicture")) {
+            this.targetHeight = 0;
+            this.targetWidth = 0;
+            this.mQuality = 80;
 
-				JSONObject options = args.optJSONObject(0);
-				if (options != null) {
-					this.targetHeight = options.getInt("targetHeight");
-					this.targetWidth = options.getInt("targetWidth");
-					this.mQuality = options.getInt("quality");
-				}
+            this.mQuality = args.getInt(0);
+            this.targetWidth = args.getInt(3);
+            this.targetHeight = args.getInt(4);
 
-				this.takePicture();
+            // If the user specifies a 0 or smaller width/height
+            // make it -1 so later comparisons succeed
+            if (this.targetWidth < 1) {
+                this.targetWidth = -1;
+            }
+            if (this.targetHeight < 1) {
+                this.targetHeight = -1;
+            }
 
-				PluginResult r = new PluginResult(PluginResult.Status.NO_RESULT);
-				r.setKeepCallback(true);
-				return r;
-			}
-			return new PluginResult(status, result);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return new PluginResult(PluginResult.Status.JSON_EXCEPTION);
-		}
-	}
+            this.takePicture();
+  
+            PluginResult r = new PluginResult(PluginResult.Status.NO_RESULT);
+            r.setKeepCallback(true);
+            callbackContext.sendPluginResult(r);
+            return true;
+        }
+        return false;
+    }
 
 	// --------------------------------------------------------------------------
 	// LOCAL METHODS
@@ -126,7 +124,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 	 * img.src="data:image/jpeg;base64,"+result; or to display URI in an img tag
 	 * img.src=result;
 	 * 
-	 */
+	 */    
 	public void takePicture() {
 		// Save the number of images currently on disk for later
 		this.numPics = queryImgDB().getCount();
@@ -136,7 +134,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 		this.imageUri = Uri.fromFile(photo);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, this.imageUri);
 
-		this.cordova.startActivityForResult((Plugin) this, intent, 1);
+		this.cordova.startActivityForResult((CordovaPlugin) this, intent, 1);
 	}
 
 	/**
@@ -165,7 +163,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 	 *            data can be attached to Intent "extras").
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
+		
 		// If image available
 		if (resultCode == Activity.RESULT_OK) {
 			try {
@@ -222,12 +220,11 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 				os.close();
 
 				// Restore exif data to file
-				exif.createOutFile(getRealPathFromURI(uri, this.ctx));
+				exif.createOutFile(getRealPathFromURI(uri, this.cordova));
 				exif.writeExifData();
 
 				// Send Uri back to JavaScript for viewing image
-				this.success(new PluginResult(PluginResult.Status.OK,
-						getRealPathFromURI(uri, this.ctx)), this.callbackId);
+				this.callbackContext.success(getRealPathFromURI(uri, this.cordova));
 
 				bitmap.recycle();
 				bitmap = null;
@@ -250,7 +247,7 @@ public class ForegroundCameraLauncher extends CameraLauncher {
 			this.failPicture("Did not complete!");
 		}
 	}
-
+	
 	/**
 	 * Scales the bitmap according to the requested size.
 	 * 

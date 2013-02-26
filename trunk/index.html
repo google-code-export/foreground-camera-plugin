@@ -1,5 +1,5 @@
 <!-- 
-		Copyright 2012 Bruno Carreira - Lucas Farias - Rafael Luna - Vin�cius Fonseca. 
+		Copyright 2013 Bruno Carreira - Lucas Farias - Rafael Luna - Vin�cius Fonseca. 
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
   <head>
     <title>Capture Photo</title>
 
-    <script src="js/cordova-2.1.0.js"></script>
+    <script src="js/cordova-2.4.0.js"></script>
     <script type="text/javascript" src="js/camera.js"></script>
     <script type="text/javascript" charset="utf-8">
 
@@ -59,7 +59,7 @@
 	    // Called if something bad happens.
 	    // 
 	    function onFail(message) {
-	      alert('Failed because: ' + message);
+	      console.error('Failed because: ' + message);
 	    }
 	
 	    // A button will call this function
