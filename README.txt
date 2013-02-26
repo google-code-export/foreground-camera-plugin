@@ -28,7 +28,8 @@ Adding the plugin to your project
     3) Change the default Camera Plugin into res/xml/config.xml file to <plugin name="Camera" value="<path to your ForegroundCameraLauncher.java>"/>.
 	4) Put the strings.xml in your res/values folder.
 	5) Put the foregroundcameraplugin.xml in your res/layout folder.
-	6) In you AndroidManifest.xml, put this permissions:
+	6) Put cordova-X.X.X.jar file in your /lib folder. 
+	7) In you AndroidManifest.xml, put this permissions:
 		    
 		    <uses-permission android:name="android.permission.CAMERA" />
     		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
